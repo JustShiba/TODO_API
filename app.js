@@ -12,7 +12,7 @@ app.use([
   compression({ level: 6 }),
   bodyParser.urlencoded({ extended: false }),
   bodyParser.json(),
-  morgan('default'),
+  morgan("[:date[clf]] :remote-user :method :url :status :res[content-length] - :response-time ms'"),
 ]);
 
 app.get('/', (req, res) => {
