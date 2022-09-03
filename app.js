@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const compression = require('compression');
 
-const setupCors = require('./src/middlewares/setupCors');
+const { setupCors, apiKey, errorHandler } = require('./src/middlewares');
+const routes = require('./src/routes');
 
 app.use([
   setupCors,
@@ -15,8 +16,6 @@ app.use([
   morgan("[:date[clf]] :remote-user :method :url :status :res[content-length] - :response-time ms'"),
 ]);
 
-app.get('/', (req, res) => {
-  res.send('Hello world!');
-});
+app.use('/', [apiKey, routes, errorHandler]);
 
 module.exports = app;
