@@ -13,10 +13,10 @@ app.use([
   bodyParser.urlencoded({ extended: false }),
   bodyParser.json(),
   morgan('default'),
-])
+]);
 
 app.get('/', (req, res) => {
   res.send('Hello world!');
-} )
+});
 
 module.exports = app;
