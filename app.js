@@ -6,6 +6,7 @@ const compression = require('compression');
 
 const { setupCors, apiKey, errorHandler } = require('./src/middlewares');
 const routes = require('./src/routes');
+const { morganPattern } = require('./src/constants');
 
 app.use([
   setupCors,
@@ -13,7 +14,7 @@ app.use([
   compression({ level: 6 }),
   bodyParser.urlencoded({ extended: false }),
   bodyParser.json(),
-  morgan("[:date[clf]] :remote-user :method :url :status :res[content-length] - :response-time ms'"),
+  morgan(morganPattern),
 ]);
 
 app.use('/', [apiKey, routes, errorHandler]);
