@@ -1,0 +1,29 @@
+{
+  "name": "todo_api",
+  "version": "1.0.0",
+  "description": "Backend for TODO app",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustShiba/TODO_API.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "psql",
+    "sequelize"
+  ],
+  "author": "JustShiba (liyalisica9356@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JustShiba/TODO_API/issues"
+  },
+  "homepage": "https://github.com/JustShiba/TODO_API#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "sequelize": "^6.21.4"
+  }
+}
