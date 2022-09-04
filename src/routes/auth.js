@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const { schemaValidator } = require('../validation/utils');
-const usersSchema = require('../validation/schemas/users');
+const { usersSchema } = require('../validation/schemas');
 const {
   signUpController,
   signInController,
