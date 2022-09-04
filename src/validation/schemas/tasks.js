@@ -15,4 +15,9 @@ module.exports = {
       isCompleted: Joi.boolean().optional(),
     }).min(2),
   },
+  removeTask: {
+    body: Joi.object().keys({
+      taskId: Joi.number().required(),
+    }),
+  },
 };
