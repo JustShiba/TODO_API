@@ -7,8 +7,6 @@ class ModelService {
 
   getOne = (options = {}) => this.model.findOne(options);
 
-  getById = (id) => this.model.findById(id);
-
   getOneByField = (field, value, options = {}) =>
     this.getOne({
       where: { [field]: value },

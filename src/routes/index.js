@@ -1,18 +1,14 @@
 const router = require('express').Router();
-const { SuccessResponse } = require('../helpers/responses');
-const generalRoutes = require('./general');
-const authToken = require('../middlewares/authToken');
 
-router.use('/', generalRoutes);
-router.get('/hello', [
+const authToken = require('../middlewares/authToken');
+const authRoutes = require('./auth');
+const tasksRoutes = require('./tasks');
+
+router.use('/', authRoutes);
+
+router.use('/tasks', [
   authToken,
-  (req, res, next) => {
-    try {
-      res.send(new SuccessResponse('Hello world'));
-    } catch (err) {
-      next(err);
-    }
-  },
+  tasksRoutes,
 ]);
 
 module.exports = router;

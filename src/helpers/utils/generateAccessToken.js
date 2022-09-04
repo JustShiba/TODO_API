@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-const generateAccessToken = (username, id) => {
+const generateAccessToken = (username, userId) => {
   const payload = {
     username,
-    id,
+    userId,
   };
 
   return jwt.sign(payload, process.env.SECRET);
