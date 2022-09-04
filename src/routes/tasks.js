@@ -6,6 +6,7 @@ const {
   createTaskController,
   updateTaskController,
   allTasksController,
+  removeTaskController,
 } = require('../controllers/tasksController');
 
 router.get('/', allTasksController);
@@ -16,6 +17,10 @@ router.post('/', [
 router.patch('/', [
   schemaValidator(tasksSchema.updateTask),
   updateTaskController,
+]);
+router.delete('/', [
+  schemaValidator(tasksSchema.removeTask),
+  removeTaskController,
 ]);
 
 module.exports = router;

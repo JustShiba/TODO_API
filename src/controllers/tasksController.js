@@ -51,8 +51,32 @@ const updateTaskController = async (req, res, next) => {
   }
 };
 
+const removeTaskController = async (req, res, next) => {
+  try {
+    const { userId } = req.user;
+    const { taskId } = req.body;
+
+    const task = await TasksService.getOne(
+      { where: { userId, taskId } },
+    );
+    if (!task) {
+      return next(new ErrorResponse(
+        'Such task for current user doesn\'t exists',
+        StatusCodes.NO_CONTENT,
+      ));
+    }
+
+    await task.destroy();
+
+    res.send(new SuccessResponse('Removed'));
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   allTasksController,
   createTaskController,
   updateTaskController,
+  removeTaskController,
 };
