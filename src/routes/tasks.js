@@ -14,11 +14,11 @@ router.post('/', [
   schemaValidator(tasksSchema.createTask),
   createTaskController,
 ]);
-router.patch('/', [
+router.patch('/:taskId', [
   schemaValidator(tasksSchema.updateTask),
   updateTaskController,
 ]);
-router.delete('/', [
+router.delete('/:taskId', [
   schemaValidator(tasksSchema.removeTask),
   removeTaskController,
 ]);

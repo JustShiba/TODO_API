@@ -41,7 +41,7 @@ const createActivityController = async (req, res, next) => {
 const updateActivityController = async (req, res, next) => {
   try {
     const payload = req.body;
-    const { activityId } = req.body;
+    const { activityId } = req.params;
     const { userId } = req.user;
 
     const activity = await ActivitiesService.getOne(
@@ -65,7 +65,7 @@ const updateActivityController = async (req, res, next) => {
 const removeActivityController = async (req, res, next) => {
   try {
     const { userId } = req.user;
-    const { activityId } = req.body;
+    const { activityId } = req.params;
 
     const activity = await ActivitiesService.getOne(
       { where: { userId, activityId } },

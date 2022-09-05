@@ -32,7 +32,7 @@ const createTaskController = async (req, res, next) => {
 const updateTaskController = async (req, res, next) => {
   try {
     const payload = req.body;
-    const { taskId } = req.body;
+    const { taskId } = req.params;
     const { userId } = req.user;
 
     const task = await TasksService.getOne({ where: { userId, taskId } });
@@ -54,7 +54,7 @@ const updateTaskController = async (req, res, next) => {
 const removeTaskController = async (req, res, next) => {
   try {
     const { userId } = req.user;
-    const { taskId } = req.body;
+    const { taskId } = req.params;
 
     const task = await TasksService.getOne(
       { where: { userId, taskId } },

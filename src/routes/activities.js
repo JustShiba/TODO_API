@@ -14,11 +14,11 @@ router.post('/', [
   schemaValidator(activitiesSchema.createActivity),
   createActivityController,
 ]);
-router.patch('/', [
+router.patch('/:activityId', [
   schemaValidator(activitiesSchema.updateActivity),
   updateActivityController,
 ]);
-router.delete('/', [
+router.delete('/:activityId', [
   schemaValidator(activitiesSchema.removeActivity),
   removeActivityController,
 ]);

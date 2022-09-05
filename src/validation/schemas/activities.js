@@ -11,8 +11,10 @@ module.exports = {
     }),
   },
   updateActivity: {
-    body: Joi.object().keys({
+    params: Joi.object().keys(({
       activityId: Joi.number().required(),
+    })),
+    body: Joi.object().keys({
       title: Joi.string().min(1).max(100).optional(),
       description: Joi.string().min(1).max(255).optional(),
       color: Joi.string().max(7).regex(hexColorPattern).optional(),
@@ -20,8 +22,8 @@ module.exports = {
     }).min(2),
   },
   removeActivity: {
-    body: Joi.object().keys({
+    params: Joi.object().keys(({
       activityId: Joi.number().required(),
-    }),
+    })),
   },
 };

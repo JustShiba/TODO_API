@@ -8,16 +8,18 @@ module.exports = {
     }),
   },
   updateTask: {
-    body: Joi.object().keys({
+    params: Joi.object().keys(({
       taskId: Joi.number().required(),
+    })),
+    body: Joi.object().keys({
       title: Joi.string().min(1).max(100).optional(),
       description: Joi.string().min(1).max(255).optional(),
       isCompleted: Joi.boolean().optional(),
     }).min(2),
   },
   removeTask: {
-    body: Joi.object().keys({
+    params: Joi.object().keys(({
       taskId: Joi.number().required(),
-    }),
+    })),
   },
 };
