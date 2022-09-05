@@ -14,6 +14,8 @@ module.exports = {
         type: Sequelize.STRING(50),
         unique: true,
       },
+      isConfirmed: Sequelize.BOOLEAN,
+      verificationCode: Sequelize.STRING(40),
     });
   },
   down: (queryInterface) => queryInterface.dropTable(USERS),

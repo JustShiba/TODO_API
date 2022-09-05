@@ -1,7 +1,9 @@
+const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const { SuccessResponse, ErrorResponse } = require('../helpers/responses');
 const UsersService = require('../services/psql/usersService');
 const generateAccessToken = require('../helpers/utils/generateAccessToken');
+// const sendEmail = require('../helpers/utils/sendEmail');
 
 const signUpController = async (req, res, next) => {
   try {
@@ -11,7 +13,16 @@ const signUpController = async (req, res, next) => {
     if (isDuplicatedEmail) return next(new ErrorResponse('Such email already exists'));
 
     const hash = await bcrypt.hash(password, parseInt(process.env.SALT, 10));
-    await UsersService.add({ email, username, password: hash });
+    const verificationCode = uuidv4();
+    // sendEmail('email', verificationCode); // TODO: remove hardcode
+    await UsersService.add({
+      email,
+      username,
+      password:
+      hash,
+      isConfirmed: false,
+      verificationCode,
+    });
 
     res.send(new SuccessResponse('User added'));
   } catch (err) {
@@ -38,7 +49,18 @@ const signInController = async (req, res, next) => {
   }
 };
 
+const verificationController = async (req, res, next) => {
+  try {
+    const { verificationCode } = req.params;
+
+    res.send(new SuccessResponse({ verificationCode }));
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   signUpController,
   signInController,
+  verificationController,
 };

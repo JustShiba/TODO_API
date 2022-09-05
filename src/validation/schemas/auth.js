@@ -17,4 +17,9 @@ module.exports = {
         .required(),
     }),
   },
+  verification: {
+    params: Joi.object().keys({
+      verificationCode: Joi.string().required(),
+    }),
+  },
 };
