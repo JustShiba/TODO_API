@@ -1,9 +1,9 @@
-const usersSchema = require('./users');
+const authSchema = require('./auth');
 const tasksSchema = require('./tasks');
 const activitiesSchema = require('./activities');
 
 module.exports = {
-  usersSchema,
+  authSchema,
   tasksSchema,
   activitiesSchema,
 };

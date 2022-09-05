@@ -1,19 +1,24 @@
 const router = require('express').Router();
 
 const { schemaValidator } = require('../validation/utils');
-const { usersSchema } = require('../validation/schemas');
+const { authSchema } = require('../validation/schemas');
 const {
   signUpController,
   signInController,
+  verificationController,
 } = require('../controllers/usersControllers');
 
 router.post('/signUp', [
-  schemaValidator(usersSchema.signUp),
+  schemaValidator(authSchema.signUp),
   signUpController,
 ]);
 router.post('/signIn', [
-  schemaValidator(usersSchema.signIn),
+  schemaValidator(authSchema.signIn),
   signInController,
+]);
+router.patch('/verification/:verificationCode', [
+  schemaValidator(authSchema.verification),
+  verificationController,
 ]);
 
 module.exports = router;

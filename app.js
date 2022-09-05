@@ -7,6 +7,7 @@ const compression = require('compression');
 const { setupCors, apiKey, errorHandler } = require('./src/middlewares');
 const routes = require('./src/routes');
 const { morganPattern } = require('./src/constants');
+const handleNotFound = require('./src/middlewares/handleNotFound');
 
 app.use([
   setupCors,
@@ -18,5 +19,7 @@ app.use([
 ]);
 
 app.use('/', [apiKey, routes, errorHandler]);
+
+app.use(handleNotFound);
 
 module.exports = app;

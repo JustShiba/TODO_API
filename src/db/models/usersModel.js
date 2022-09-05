@@ -16,6 +16,8 @@ const UsersModel = sequelize.define(
       type: Sequelize.STRING(50),
       unique: true,
     },
+    isConfirmed: Sequelize.BOOLEAN,
+    verificationCode: Sequelize.STRING(40),
   },
   {
     paranoid: false,
