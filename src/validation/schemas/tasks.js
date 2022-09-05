@@ -15,7 +15,7 @@ module.exports = {
       title: Joi.string().min(1).max(100).optional(),
       description: Joi.string().min(1).max(255).optional(),
       isCompleted: Joi.boolean().optional(),
-    }).min(2),
+    }).min(1),
   },
   removeTask: {
     params: Joi.object().keys(({
