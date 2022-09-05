@@ -19,7 +19,7 @@ module.exports = {
       description: Joi.string().min(1).max(255).optional(),
       color: Joi.string().max(7).regex(hexColorPattern).optional(),
       completionStatus: Joi.string().min(1).max(100).optional(),
-    }).min(2),
+    }).min(1),
   },
   removeActivity: {
     params: Joi.object().keys(({
