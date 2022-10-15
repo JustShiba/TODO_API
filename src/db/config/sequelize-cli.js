@@ -1,15 +1,31 @@
 require('dotenv').config();
+const { logger } = require('../../helpers/utils/logger');
+
+const {
+  PSQL_DATABASE,
+  PSQL_USER,
+  PSQL_PASSWORD,
+  PSQL_SERVER,
+  PSQL_PORT,
+  NODE_ENV,
+} = process.env || {};
 
 const dbConfig = {
-  username: process.env.PSQL_USER,
-  password: process.env.PSQL_PASSWORD,
-  database: process.env.PSQL_DATABASE,
-  host: process.env.PSQL_SERVER,
-  port: process.env.PSQL_PORT,
+  username: PSQL_USER,
+  password: PSQL_PASSWORD,
+  database: PSQL_DATABASE,
+  host: PSQL_SERVER,
+  port: PSQL_PORT,
   dialect: 'postgres',
+  dialectOptions: NODE_ENV !== 'localhost' ? {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  } : false,
 };
 
-console.log('SEQUELIZE CLI CONFIG: ', dbConfig);
+logger.info('SEQUELIZE CLI CONFIG: ', dbConfig);
 
 module.exports = {
   local: dbConfig,

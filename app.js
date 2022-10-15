@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const compression = require('compression');
 
-const { setupCors, apiKey, errorHandler } = require('./src/middlewares');
+const { setupCors, apiKey, errorHandler, sendWithStatus } = require('./src/middlewares');
 const routes = require('./src/routes');
 const { morganPattern } = require('./src/constants');
 const handleNotFound = require('./src/middlewares/handleNotFound');
@@ -16,9 +16,14 @@ app.use([
   bodyParser.urlencoded({ extended: false }),
   bodyParser.json(),
   morgan(morganPattern),
+  sendWithStatus,
 ]);
 
-app.use('/', [apiKey, routes, errorHandler]);
+app.use('/', [
+  apiKey,
+  routes,
+  errorHandler,
+]);
 
 app.use(handleNotFound);
 
