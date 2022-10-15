@@ -1,5 +1,5 @@
-const { BadRequest } = require('../helpers/responses/ErrorResponses');
+const { NotFound } = require('../helpers/responses/ErrorResponses');
 
 module.exports = (req, res) => {
-  res.sendWithStatus(BadRequest('Not found'));
+  res.sendWithStatus(NotFound('Not found'));
 };
