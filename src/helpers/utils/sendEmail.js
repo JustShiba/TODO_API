@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 module.exports = (email, code) => {
   const port = parseInt(process.env.PORT, 10) || '7500';
-  const host = process.env.HOST || '127.0.0.1';
+  const host = process.env.NODE_ENV || '127.0.0.1';
 
   const mail = nodemailer.createTransport({ // TODO: add creds
     service: 'gmail',
