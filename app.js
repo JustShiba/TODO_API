@@ -8,6 +8,7 @@ const { setupCors, apiKey, errorHandler, sendWithStatus } = require('./src/middl
 const routes = require('./src/routes');
 const { morganPattern } = require('./src/constants');
 const handleNotFound = require('./src/middlewares/handleNotFound');
+const mainTemplate = require('./src/public/template');
 
 app.use([
   setupCors,
@@ -17,6 +18,7 @@ app.use([
   bodyParser.json(),
   morgan(morganPattern),
   sendWithStatus,
+  mainTemplate,
 ]);
 
 app.use('/', [
