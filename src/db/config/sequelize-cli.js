@@ -10,8 +10,8 @@ const dbConfig = {
   dialect: 'postgres',
   dialectOptions: {
     ssl: {
-      require: true,
-      rejectUnauthorized: false,
+      require: process.env.HOST !== 'localhost',
+      rejectUnauthorized: process.env.HOST === 'localhost',
     },
   },
 };

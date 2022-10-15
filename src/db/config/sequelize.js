@@ -7,6 +7,7 @@ const {
   PSQL_PASSWORD,
   PSQL_SERVER,
   PSQL_PORT,
+  HOST,
 } = process.env || {};
 
 const sequelize = new Sequelize(
@@ -23,12 +24,12 @@ const sequelize = new Sequelize(
       acquire: 30000,
       idle: 10000,
     },
-    dialectOptions: {
+    dialectOptions: HOST !== 'localhost' ? {
       ssl: {
         require: true,
         rejectUnauthorized: false,
       },
-    },
+    } : false,
     logging: (query) => psqlLogger.info(query),
   },
 );
