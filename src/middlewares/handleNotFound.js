@@ -1,6 +1,5 @@
-const { StatusCodes } = require('http-status-codes');
-const { ErrorResponse } = require('../helpers/responses');
+const { BadRequest } = require('../helpers/responses/ErrorResponses');
 
 module.exports = (req, res) => {
-  res.send(new ErrorResponse('Not found', StatusCodes.NOT_FOUND));
+  res.sendWithStatus(BadRequest('Not found'));
 };

@@ -1,6 +1,6 @@
-const { StatusCodes } = require('http-status-codes');
 const TasksService = require('../services/psql/tasksService');
-const { SuccessResponse, ErrorResponse } = require('../helpers/responses');
+const { Success, Created } = require('../helpers/responses/SuccessResponses');
+const { NoContent } = require('../helpers/responses/ErrorResponses');
 
 const allTasksController = async (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ const allTasksController = async (req, res, next) => {
 
     const allTasks = await TasksService.getAllByUserId(userId);
 
-    res.send(new SuccessResponse(allTasks));
+    res.sendWithStatus(Success(allTasks));
   } catch (err) {
     next(err);
   }
@@ -23,7 +23,7 @@ const createTaskController = async (req, res, next) => {
       { ...payload, userId, isCompleted: false },
     );
 
-    res.send(new SuccessResponse(newTask, StatusCodes.CREATED));
+    res.sendWithStatus(Created(newTask));
   } catch (err) {
     next(err);
   }
@@ -36,16 +36,11 @@ const updateTaskController = async (req, res, next) => {
     const { userId } = req.user;
 
     const task = await TasksService.getOne({ where: { userId, taskId } });
-    if (!task) {
-      return next(new ErrorResponse(
-        'Such task for current user doesn\'t exists',
-        StatusCodes.NO_CONTENT,
-      ));
-    }
+    if (!task) return next(NoContent('Such task for current user doesn\'t exists'));
 
     const updatedTask = await task.update(payload);
 
-    res.send(new SuccessResponse(updatedTask));
+    res.sendWithStatus(Success(updatedTask));
   } catch (err) {
     next(err);
   }
@@ -56,19 +51,12 @@ const removeTaskController = async (req, res, next) => {
     const { userId } = req.user;
     const { taskId } = req.params;
 
-    const task = await TasksService.getOne(
-      { where: { userId, taskId } },
-    );
-    if (!task) {
-      return next(new ErrorResponse(
-        'Such task for current user doesn\'t exists',
-        StatusCodes.NO_CONTENT,
-      ));
-    }
+    const task = await TasksService.getOne({ where: { userId, taskId } });
+    if (!task) return next(NoContent('Such task for current user doesn\'t exists'));
 
     await task.destroy();
 
-    res.send(new SuccessResponse('Removed'));
+    res.sendWithStatus(Success('Removed'));
   } catch (err) {
     next(err);
   }

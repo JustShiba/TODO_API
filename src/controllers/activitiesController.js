@@ -1,6 +1,6 @@
-const { StatusCodes } = require('http-status-codes');
 const ActivitiesService = require('../services/psql/activitiesService');
-const { SuccessResponse, ErrorResponse } = require('../helpers/responses');
+const { Success, Created } = require('../helpers/responses/SuccessResponses');
+const { BadRequest, NoContent } = require('../helpers/responses/ErrorResponses');
 
 const allActivitiesController = async (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ const allActivitiesController = async (req, res, next) => {
 
     const allActivities = await ActivitiesService.getAllByUserId(userId);
 
-    res.send(new SuccessResponse(allActivities));
+    res.sendWithStatus(Success(allActivities));
   } catch (err) {
     next(err);
   }
@@ -19,20 +19,12 @@ const createActivityController = async (req, res, next) => {
     const payload = req.body;
     const { userId } = req.user;
 
-    const activityCountForUser = await ActivitiesService.count(
-      { where: { userId } },
-    );
-    if (activityCountForUser >= 15) {
-      return next(new ErrorResponse(
-        'Max limit of activities reached',
-      ));
-    }
+    const activityCountForUser = await ActivitiesService.count({ where: { userId } });
+    if (activityCountForUser >= 15) return next(BadRequest('Max limit of activities reached'));
 
-    const newActivity = await ActivitiesService.add(
-      { ...payload, userId },
-    );
+    const newActivity = await ActivitiesService.add({ ...payload, userId });
 
-    res.send(new SuccessResponse(newActivity, StatusCodes.CREATED));
+    res.sendWithStatus(Created(newActivity));
   } catch (err) {
     next(err);
   }
@@ -44,19 +36,12 @@ const updateActivityController = async (req, res, next) => {
     const { activityId } = req.params;
     const { userId } = req.user;
 
-    const activity = await ActivitiesService.getOne(
-      { where: { userId, activityId } },
-    );
-    if (!activity) {
-      return next(new ErrorResponse(
-        'Such activity for current user doesn\'t exists',
-        StatusCodes.NO_CONTENT,
-      ));
-    }
+    const activity = await ActivitiesService.getOne({ where: { userId, activityId } });
+    if (!activity) return next(NoContent('Such activity for current user doesn\'t exists'));
 
     const updatedActivity = await activity.update(payload);
 
-    res.send(new SuccessResponse(updatedActivity));
+    res.sendWithStatus(Success(updatedActivity));
   } catch (err) {
     next(err);
   }
@@ -67,19 +52,12 @@ const removeActivityController = async (req, res, next) => {
     const { userId } = req.user;
     const { activityId } = req.params;
 
-    const activity = await ActivitiesService.getOne(
-      { where: { userId, activityId } },
-    );
-    if (!activity) {
-      return next(new ErrorResponse(
-        'Such activity for current user doesn\'t exists',
-        StatusCodes.NO_CONTENT,
-      ));
-    }
+    const activity = await ActivitiesService.getOne({ where: { userId, activityId } });
+    if (!activity) return next(NoContent('Such activity for current user doesn\'t exists'));
 
     await activity.destroy();
 
-    res.send(new SuccessResponse('Removed'));
+    res.sendWithStatus(Success('Removed'));
   } catch (err) {
     next(err);
   }
