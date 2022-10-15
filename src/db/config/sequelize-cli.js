@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { logger } = require('../../helpers/utils/logger');
 
 const dbConfig = {
   username: process.env.PSQL_USER,
@@ -7,9 +8,15 @@ const dbConfig = {
   host: process.env.PSQL_SERVER,
   port: process.env.PSQL_PORT,
   dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
 };
 
-console.log('SEQUELIZE CLI CONFIG: ', dbConfig);
+logger.info('SEQUELIZE CLI CONFIG: ', dbConfig);
 
 module.exports = {
   local: dbConfig,

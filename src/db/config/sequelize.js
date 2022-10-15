@@ -1,16 +1,21 @@
 const Sequelize = require('sequelize');
-const log4js = require('log4js');
+const { psqlLogger, logger } = require('../../helpers/utils/logger');
 
-const logger = log4js.getLogger();
-const queryLogger = log4js.getLogger('SEQUELIZE');
+const {
+  PSQL_DATABASE,
+  PSQL_USER,
+  PSQL_PASSWORD,
+  PSQL_SERVER,
+  PSQL_PORT,
+} = process.env || {};
 
 const sequelize = new Sequelize(
-  process.env.PSQL_DATABASE,
-  process.env.PSQL_USER,
-  process.env.PSQL_PASSWORD,
+  PSQL_DATABASE,
+  PSQL_USER,
+  PSQL_PASSWORD,
   {
-    host: process.env.PSQL_SERVER,
-    port: process.env.PSQL_PORT,
+    host: PSQL_SERVER,
+    port: PSQL_PORT,
     dialect: 'postgres',
     pool: {
       max: 5,
@@ -18,18 +23,41 @@ const sequelize = new Sequelize(
       acquire: 30000,
       idle: 10000,
     },
-    logging: (query) => queryLogger.info(query),
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+    logging: (query) => psqlLogger.info(query),
   },
 );
 
 sequelize
   .authenticate()
   .then(() => {
+    logger.info(
+      {
+        PSQL_DATABASE,
+        PSQL_USER,
+        PSQL_PASSWORD,
+        PSQL_SERVER,
+        PSQL_PORT,
+      },
+    );
     logger.info('Connection to database has been established successfully.');
   })
   .catch((err) => {
     logger.error('Unable to connect to the database:', err);
-
+    logger.info(
+      {
+        PSQL_DATABASE,
+        PSQL_USER,
+        PSQL_PASSWORD,
+        PSQL_SERVER,
+        PSQL_PORT,
+      },
+    );
     process.exit(1);
   });
 
