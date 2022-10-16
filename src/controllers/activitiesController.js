@@ -1,6 +1,6 @@
 const ActivitiesService = require('../services/psql/activitiesService');
 const { Success, Created } = require('../helpers/responses/SuccessResponses');
-const { BadRequest, NoContent } = require('../helpers/responses/ErrorResponses');
+const { BadRequest } = require('../helpers/responses/ErrorResponses');
 
 const allActivitiesController = async (req, res, next) => {
   try {
@@ -37,7 +37,7 @@ const updateActivityController = async (req, res, next) => {
     const { userId } = req.user;
 
     const activity = await ActivitiesService.getOne({ where: { userId, activityId } });
-    if (!activity) return next(NoContent('Such activity for current user doesn\'t exists'));
+    if (!activity) return next(BadRequest('Such activity for current user doesn\'t exists'));
 
     const updatedActivity = await activity.update(payload);
 
@@ -53,7 +53,7 @@ const removeActivityController = async (req, res, next) => {
     const { activityId } = req.params;
 
     const activity = await ActivitiesService.getOne({ where: { userId, activityId } });
-    if (!activity) return next(NoContent('Such activity for current user doesn\'t exists'));
+    if (!activity) return next(BadRequest('Such activity for current user doesn\'t exists'));
 
     await activity.destroy();
 

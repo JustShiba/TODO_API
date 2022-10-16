@@ -26,13 +26,6 @@ class ErrorResponses extends BasicResponse {
     return this;
   };
 
-  NoContent = (message) => {
-    this.message = message || ReasonPhrases.NO_CONTENT;
-    this.status = StatusCodes.NO_CONTENT;
-
-    return this;
-  };
-
   ServerError = (message) => {
     this.message = message || ReasonPhrases.INTERNAL_SERVER_ERROR;
     this.status = StatusCodes.INTERNAL_SERVER_ERROR;

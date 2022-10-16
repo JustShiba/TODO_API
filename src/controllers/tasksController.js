@@ -1,6 +1,6 @@
 const TasksService = require('../services/psql/tasksService');
 const { Success, Created } = require('../helpers/responses/SuccessResponses');
-const { NoContent } = require('../helpers/responses/ErrorResponses');
+const { BadRequest } = require('../helpers/responses/ErrorResponses');
 
 const allTasksController = async (req, res, next) => {
   try {
@@ -36,7 +36,7 @@ const updateTaskController = async (req, res, next) => {
     const { userId } = req.user;
 
     const task = await TasksService.getOne({ where: { userId, taskId } });
-    if (!task) return next(NoContent('Such task for current user doesn\'t exists'));
+    if (!task) return next(BadRequest('Such task for current user doesn\'t exists'));
 
     const updatedTask = await task.update(payload);
 
@@ -52,7 +52,7 @@ const removeTaskController = async (req, res, next) => {
     const { taskId } = req.params;
 
     const task = await TasksService.getOne({ where: { userId, taskId } });
-    if (!task) return next(NoContent('Such task for current user doesn\'t exists'));
+    if (!task) return next(BadRequest('Such task for current user doesn\'t exists'));
 
     await task.destroy();
 

@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const UsersService = require('../services/psql/usersService');
 const generateAccessToken = require('../helpers/utils/generateAccessToken');
 const { Success } = require('../helpers/responses/SuccessResponses');
-const { BadRequest, NoContent } = require('../helpers/responses/ErrorResponses');
+const { BadRequest } = require('../helpers/responses/ErrorResponses');
 // const sendEmail = require('../helpers/utils/sendEmail');
 
 const signUpController = async (req, res, next) => {
@@ -36,7 +36,7 @@ const signInController = async (req, res, next) => {
     const { email, password } = req.body;
 
     const user = await UsersService.getOneByField('email', email);
-    if (!user) return next(NoContent('No such user'));
+    if (!user) return next(BadRequest('No such user'));
     const { userId, username } = user || {};
 
     const isCorrectPassword = await bcrypt.compareSync(password, user.password);
