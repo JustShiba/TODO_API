@@ -18,8 +18,9 @@ app.use([
   bodyParser.json(),
   morgan(morganPattern),
   sendWithStatus,
-  mainTemplate,
 ]);
+
+app.get('/', mainTemplate);
 
 app.use('/', [
   apiKey,
